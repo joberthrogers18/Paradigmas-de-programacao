@@ -1,13 +1,19 @@
 from bs4 import BeautifulSoup
 from requests import get
+from pymongo import MongoClient
 import re
 import json
 
-list_courses = []
+#try to connect to database
+client = MongoClient('mongodb://jobs:j12345@ds163530.mlab.com:63530/uni-grade')
+db = client['uni-grade']
+collection = db['course']
 
 def get_course():
 
-    for campus in range(4):
+    # for campus in range(4):
+        list_courses = []
+
         response = get('https://matriculaweb.unb.br/graduacao/curso_rel.aspx?cod={}'.format(4))
         if response.status_code == 200:
 
@@ -32,7 +38,10 @@ def get_course():
                 
                 if course_atributes != {}:
                     list_courses.append(course_atributes)
-            print(list_courses)
+                
+        print(list_courses)
+        collection.insert_many(list_courses)
+            
                 
                 
 get_course()
