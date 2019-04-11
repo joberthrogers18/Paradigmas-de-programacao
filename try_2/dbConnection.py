@@ -1,0 +1,110 @@
+from pymongo import MongoClient
+import mwscanner
+
+#Connect to database
+
+client = MongoClient('mongodb://localhost:27017/')
+db = client['mwtest']
+colCourse = db['course']
+colDisciplines = db['discipline']
+colHabilitation = db['habilitation']
+colDepartament = db['departament']
+
+
+def save_data(campus):
+
+    list_disciplines = []
+    list_habilitations = []
+    list_course = []
+    list_departaments = []
+
+    for course in campus.courses:
+
+        list_course.append(course)
+        
+        for habilitation in course.habilitations:
+            habilitation.buildLinkList()
+            list_habilitations.append(habilitation)
+        
+            
+
+    for departament in campus.departments:
+            departament.buildLinkList()
+            list_departaments.append(departament)
+
+    
+
+
+
+def save_all_disciplines(list_disciplines):
+    for sub_discipline in list_disciplines:
+        for single_discipline in sub_discipline:
+            colDisciplines.insert_one(single_discipline)
+
+def save_habilitations(habilitations):
+
+    for habilitation in habilitations:
+
+        current_course = {}
+        list_disciplines = []
+
+        for periods in habilitation.disciplines:
+            for discipline in periods['Disciplinas']:
+                list_disciplines.append(discipline['Código'])
+                
+        current_course.update({
+            'name': habilitation.name + " (" + habilitation.degree + ")",
+            'code': habilitation.code,
+
+            'disciplines': list_disciplines
+        })
+        
+        colHabilitation.insert_one(current_course)
+        
+def save_courses(courses):
+
+    for course in courses:
+
+        list_habilitations = []
+        dict_course = {}
+
+        for habilitation in course.habilitations:
+            list_habilitations.append(habilitation.code)
+        
+        dict_course.update({
+            'campus': course.campus,
+            'code': course.code,
+            'name': course.name,
+            'shift': course.shift,
+            'modality': course.shift,
+            'habilitations': list_habilitations
+        })
+
+        colCourse.insert_one(dict_course)    
+
+def save_departament(departaments):
+
+    for departament in departaments:
+
+        list_disciplines = []
+        current_departament = {}
+
+        for disciplines in departament.disciplines:
+            list_disciplines.append(disciplines['Código'])
+
+        current_departament.update({
+            'campus': departament.campus,
+            'code': departament.code,
+            'name':  departament.name,
+            'initials': departament.initials,
+            'disciplines': list_disciplines
+        })
+
+        colDepartament.insert_one(current_departament)
+
+
+
+
+
+        
+
