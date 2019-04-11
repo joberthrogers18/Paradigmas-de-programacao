@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import re
 import mwscanner
 
 #Connect to database
@@ -18,7 +19,7 @@ def save_data(campus):
     list_course = []
     list_departaments = []
 
-    '''
+    
     for course in campus.courses:
 
         list_course.append(course)
@@ -26,15 +27,17 @@ def save_data(campus):
         for habilitation in course.habilitations:
             habilitation.buildLinkList()
             list_habilitations.append(habilitation)
-        
-     '''       
 
+    save_habilitations(list_habilitations)
+        
+            
+    '''
     for departament in campus.departments:
             departament.buildLinkList()
             list_disciplines.append({ departament.name: departament.disciplines})
             #list_departaments.append(departament)
     save_all_disciplines(list_disciplines)
-
+    '''
 
 
 def save_all_disciplines(disciplines):
@@ -53,21 +56,28 @@ def save_habilitations(habilitations):
 
     for habilitation in habilitations:
 
-        current_course = {}
-        list_disciplines = []
-
+        current_habilitation = {}
+        diciplines_by_period = []
+    
         for periods in habilitation.disciplines:
+
+            list_disciplines = []
+            current_period = re.search(r'\d+',periods['Período']).group()
+
             for discipline in periods['Disciplinas']:
                 list_disciplines.append(discipline['Código'])
+            diciplines_by_period.append({
+                current_period: list_disciplines
+            })
+            
                 
-        current_course.update({
+        current_habilitation.update({
             'name': habilitation.name + " (" + habilitation.degree + ")",
             'code': habilitation.code,
-
-            'disciplines': list_disciplines
+            'disciplines': diciplines_by_period
         })
         
-        colHabilitation.insert_one(current_course)
+        colHabilitation.insert_one(current_habilitation)
         
 def save_courses(courses):
 
