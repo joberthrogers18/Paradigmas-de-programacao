@@ -18,6 +18,7 @@ def save_data(campus):
     list_course = []
     list_departaments = []
 
+    '''
     for course in campus.courses:
 
         list_course.append(course)
@@ -26,20 +27,27 @@ def save_data(campus):
             habilitation.buildLinkList()
             list_habilitations.append(habilitation)
         
-            
+     '''       
 
     for departament in campus.departments:
             departament.buildLinkList()
-            list_departaments.append(departament)
+            list_disciplines.append({ departament.name: departament.disciplines})
+            #list_departaments.append(departament)
+    save_all_disciplines(list_disciplines)
 
-    
 
 
-
-def save_all_disciplines(list_disciplines):
-    for sub_discipline in list_disciplines:
-        for single_discipline in sub_discipline:
-            colDisciplines.insert_one(single_discipline)
+def save_all_disciplines(disciplines):
+    for sub_discipline in disciplines:
+        for key in sub_discipline:    
+            for single_discipline in sub_discipline[key]:
+                current_discipline = {}
+                current_discipline.update({
+                    'code' : single_discipline['Código'],
+                    'name': single_discipline['Denominação'],
+                    'departament': key
+                })
+                colDisciplines.insert_one(single_discipline)
 
 def save_habilitations(habilitations):
 
