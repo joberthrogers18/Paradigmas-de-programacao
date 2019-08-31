@@ -37,3 +37,12 @@ inv_lista l = inv_aux l []
 listInverse :: [t] -> [t]
 listInverse [] = []
 listInverse (x:xs) = (listInverse xs) ++ [x]
+
+-- se contem um elemento na lista
+containInList :: Int -> [Int] -> Bool
+containInList _ [] = False
+containInList number (x:xs)
+  | (number == x) = True
+  | otherwise = (containInList number xs) 
+
+-- verificar o maior elemento de uma lista
