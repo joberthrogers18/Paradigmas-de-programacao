@@ -1,27 +1,27 @@
-% progenitor(pam, bob).
-% progenitor(tom, bob).
-% progenitor(tom, liz).
-% progenitor(bob, ann).
-% progenitor(bob, pat).
-% progenitor(pat, jim).
+progenitor(pam, bob).
+progenitor(tom, bob).
+progenitor(tom, liz).
+progenitor(bob, ann).
+progenitor(bob, pat).
+progenitor(pat, jim).
 
-% :- discontiguous([
-%     mulher/1, homem/1
-% ]).
+:- discontiguous([
+    mulher/1, homem/1
+]).
 
-% mulher(pam).
-% homem(tom).
-% homem(bob).
-% mulher(liz).
-% mulher(pat).
-% mulher(ann).
-% homem(jim).
+mulher(pam).
+homem(tom).
+homem(bob).
+mulher(liz).
+mulher(pat).
+mulher(ann).
+homem(jim).
 
-% robo(peter).
-% capaz_fazer(peter, armas).
-% machuca(armas, pedro).
-% humano(pedro).
-% proibido_fazer(R, B) :- robo(R), capaz_fazer(R, B), machuca(B, H), humano(H).
+robo(peter).
+capaz_fazer(peter, armas).
+machuca(armas, pedro).
+humano(pedro).
+proibido_fazer(R, B) :- robo(R), capaz_fazer(R, B), machuca(B, H), humano(H).
 
 dados_pessoa(jobs, data(25, 5, 2018)).
 dados_pessoa(melanie, data(5, 1, 2019)).
@@ -32,15 +32,15 @@ verificar_acima_2016(Nome, Ano) :- dados_pessoa(Nome, data(_, _, Ano)), Ano > 20
 
 % Exercicio de 01 da aula 1
 
-% progenitor(jose, joao).
-% progenitor(maria, joao).
-% progenitor(jose, ana).
-% progenitor(maria, ana).
-% progenitor(ana, helena).
-% progenitor(ana, joana).
-% progenitor(joao, mario).
-% progenitor(helena, carlos).
-% progenitor(mario, helena).
+progenitor(jose, joao).
+progenitor(maria, joao).
+progenitor(jose, ana).
+progenitor(maria, ana).
+progenitor(ana, helena).
+progenitor(ana, joana).
+progenitor(joao, mario).
+progenitor(helena, carlos).
+progenitor(mario, helena).
 
 
 aluno(joao,calculo).
