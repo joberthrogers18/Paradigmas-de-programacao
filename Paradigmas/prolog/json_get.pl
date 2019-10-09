@@ -3,7 +3,7 @@
 
 :- dynamic(known/2).
 
-open_notify_url("http://api.open-notify.org/iss-now.json").
+open_notify_url("http://mwapi.herokuapp.com/habilitations").
 
 %! iss_data(-Data) is det.
 %  get JSON ISS location data from open notify api and read in as dict
@@ -15,16 +15,27 @@ iss_data(Data) :-
         close(In)
     ).
 
-%! cached_iss_data(-Data) is det.
-%  get cached data, else make a fresh request, useful during development.
+walk_list([], _ ).
+walk_list([H|_], H) :- walk_list([], _).
+
 cached_iss_data(Data) :-
     known(data, Data) ;
     iss_data(Data),
     assert(known(data, Data)).
 
+get_informations(H) :-
+    writeln(""),
+    write(H).
+
+:- dynamic teste/1.
+
+teste(H) :- cached_iss_data(Data), walk_list(Data, H), get_informations(H).
+
+
 %! iss_location(+Data, -Lat, -Long) is det.
 %  extract the latitude and longitude from the data.
-iss_location(Data, Lat, Long) :-
-    Position = Data.get(iss_position),
-    Lat = Position.get(latitude),
-    Long = Position.get(longitude).
+% iss_habilitations(Data, Discipline) :-
+%     first_get(Data, First),
+%     Position = Data.get(iss_position),
+%     Lat = Position.get(latitude),
+%     Long = Position.get(longitude).
