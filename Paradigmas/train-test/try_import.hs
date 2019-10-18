@@ -1,7 +1,8 @@
 import FuncaoAgenda 
 
-processing :: Agenda -> IO()
-processing (Agenda nome telefone) = putStrLn (nome ++ " " ++ telefone)
+process_data :: Agenda -> IO()
+process_data (Agenda nome email [(residencial, celular)]) = 
+    putStrLn("Registrado com sucesso")
 
 main = do
-    processing(Agenda "teste" "123")
+    process_data (Agenda "jobs" "teste" [("123", "321")])

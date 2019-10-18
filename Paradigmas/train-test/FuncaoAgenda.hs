@@ -7,9 +7,8 @@ module FuncaoAgenda (
 type Nome = String
 type TelRes = String
 type Cel = String
+type Email = String
 
-data Agenda = Agenda Nome TelRes deriving(Show, Eq)
-
-    
+data Agenda = Agenda Nome Email [(TelRes, Cel)] deriving(Show, Eq)
 
 
